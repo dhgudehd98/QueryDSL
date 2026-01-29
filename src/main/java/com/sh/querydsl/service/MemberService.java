@@ -5,9 +5,12 @@ import com.sh.querydsl.dto.MemberTeamDto;
 import com.sh.querydsl.entity.Member;
 import com.sh.querydsl.entity.Team;
 import com.sh.querydsl.repository.MemberJpaRepository;
+import com.sh.querydsl.repository.MemberRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +22,7 @@ public class MemberService {
 
     private final EntityManager em;
     private final MemberJpaRepository memberJpaRepository;
+    private final MemberRepository memberRepository;
 
 
     @Transactional
@@ -37,5 +41,13 @@ public class MemberService {
 
     public List<MemberTeamDto> searchMemberV1(MemberSearchDto searchDto) {
         return memberJpaRepository.search(searchDto);
+    }
+
+    public Page<MemberTeamDto> searchPageSimple(MemberSearchDto memberSearchDto, Pageable pageable) {
+        return memberRepository.searchPageSimple(memberSearchDto, pageable);
+    }
+
+    public Page<MemberTeamDto> searchPageComplex(MemberSearchDto memberSearchDto, Pageable pageable) {
+        return memberRepository.searchPageComplex(memberSearchDto, pageable);
     }
 }
